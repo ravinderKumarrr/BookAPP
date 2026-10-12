@@ -1,0 +1,41 @@
+/* BookApp application styles */
+
+/* Prevent unwanted horizontal scrolling */
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* Smooth page scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Buttons */
+button {
+  font-family: inherit;
+}
+
+/* Links */
+a {
+  font-family: inherit;
+}
+
+/* Images */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Responsive text selection */
+::selection {
+  background: #4F9FE0;
+  color: #ffffff;
+}
+
+/* Mobile adjustments */
+@media (max-width: 640px) {
+  body {
+    overflow-x: hidden;
+  }
+}
