@@ -19,15 +19,11 @@ connectDB();
 
 const app = express();
 
-app.use(
-  cors({
-    origin: [
-      "http://localhost:5173",
-      "https://book-app-pink.vercel.app"
-    ],
-    credentials: true,
-  })
-);
+app.use(cors({
+  origin: "https://book-app-pink.vercel.app",
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
