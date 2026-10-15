@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Mail, Lock, Eye, EyeOff, KeyRound } from "lucide-react";
 import logo from "../assets/book_app_logo.png";
+import api from "../services/api";
 
 export default function Login({ onSignIn }) {
   const [email, setEmail] = useState("");
@@ -14,30 +15,17 @@ export default function Login({ onSignIn }) {
     e.preventDefault();
 
     try {
-      const response = await fetch(
-      "http://localhost:5000/api/auth/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: email,
-            password: password,
-          }),
-        }
-      );
+      const response = await api.post("/auth/login", {
+        email,
+        password,
+      });
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Login failed");
-      }
+      const { token, user } = response.data.data;
+      localStorage.setItem("bookapp_token", token);
+      localStorage.setItem("bookapp_user", JSON.stringify(user));
 
       alert("Login successful!");
-
       navigate("/dashboard");
-
     } catch (error) {
       alert(error.message);
     }

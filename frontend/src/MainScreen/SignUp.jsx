@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 
 import logo from "../assets/book_app_logo.png";
+import api from "../services/api";
 
 // ======================================================
 // CITIES
@@ -316,48 +317,28 @@ export default function SignUp() {
       // SEND REQUEST TO BACKEND
       // ---------------------------------------------
 
-      const response = await fetch(
-        "http://localhost:5000/api/auth/signup",
-        {
-          method: "POST",
+      const response = await api.post("/auth/signup", {
+        name: form.fullName.trim(),
+        phone: form.phone.trim(),
+        email: form.email.trim(),
+        password: form.password,
+        confirmPassword: form.confirmPassword,
+        city: form.city,
+      });
 
-          headers: {
-            "Content-Type": "application/json",
-          },
-
-          body: JSON.stringify({
-            name: form.fullName.trim(),
-            phone: form.phone.trim(),
-            email: form.email.trim(),
-            password: form.password,
-            confirmPassword:
-              form.confirmPassword,
-            city: form.city,
-          }),
-        }
-      );
+      const data = response.data;
 
       console.log(
         "Backend response status:",
         response.status
       );
 
-      // ---------------------------------------------
-      // READ BACKEND RESPONSE
-      // ---------------------------------------------
-
-      const data = await response.json();
-
       console.log(
         "Backend response:",
         data
       );
 
-      // ---------------------------------------------
-      // BACKEND ERROR
-      // ---------------------------------------------
-
-      if (!response.ok) {
+      if (!response.status || response.status >= 400) {
         throw new Error(
           data.message ||
             "Signup failed"
@@ -414,7 +395,7 @@ export default function SignUp() {
         error instanceof TypeError
       ) {
         setSubmitError(
-          "Unable to connect to the backend. Make sure the backend is running on http://localhost:5000."
+          "Unable to connect to the backend. Check the API configuration and make sure the server is running."
         );
       } else {
         setSubmitError(
