@@ -54,13 +54,12 @@ bookapp/
 
 ## 3. Setup & Run — Backend
 
+Run setup commands from the repository root:
 ```bash
-cd backend
-npm install
-cp .env.example .env
+npm install --prefix backend
 ```
 
-Edit `.env`:
+Create `backend/.env` with:
 ```
 PORT=5000
 MONGO_URI=your_mongodb_connection_string
@@ -71,36 +70,36 @@ CLIENT_URL=http://localhost:5173
 
 Seed sample data (8 books across all 8 categories, one sample seller):
 ```bash
-npm run seed
+npm run seed --prefix backend
 ```
 This prints a sample login: `seller@bookapp.com` / `Password1`
-
-Start the server:
-```bash
-npm run dev
-```
-Backend runs at `http://localhost:5000`. Visit `http://localhost:5000/` — you should see `{"success":true,"message":"BookApp API is running"}`.
 
 ---
 
 ## 4. Setup & Run — Frontend
 
-In a **new terminal**:
+Install frontend dependencies from the repository root:
 ```bash
-cd frontend
-npm install
-cp .env.example .env
-```
-`.env` already defaults to:
-```
-VITE_API_URL=http://localhost:5000/api
+npm install --prefix frontend
 ```
 
-Start the dev server:
+Install root dependencies and start both servers:
 ```bash
+npm install
 npm run dev
 ```
-Frontend runs at `http://localhost:5173`.
+You can also start both servers from the frontend directory with
+`npm run dev`; the frontend script delegates to the root development command.
+The frontend runs at `http://localhost:5173`; the backend runs at
+`http://localhost:5000`. The frontend's `/api` requests are forwarded by Vite
+to the backend. Visit `http://localhost:5000/` to confirm the API is running.
+Local development uses the Vite `/api` proxy, so no frontend `.env` file is
+needed for local development.
+
+For separate frontend and backend deployments, set `VITE_API_URL` in the
+frontend hosting provider to the backend's full API URL, for example
+`https://your-backend-url.vercel.app/api`, then rebuild/redeploy the frontend.
+Set the backend's `CLIENT_URL` to the frontend's deployed origin as well.
 
 ---
 
